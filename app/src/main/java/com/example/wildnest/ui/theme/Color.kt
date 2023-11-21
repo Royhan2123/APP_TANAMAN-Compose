@@ -19,6 +19,7 @@ val LightGray = Color(0xFFADADAD)
 val LightRed = Color(0xFFFF6C79)
 val Yellow = Color(0xFFFFDB00)
 val Teal = Color(0xFF0FE983)
+val TealLight = Color(0xFF69FFB9)
 val Primary = Color(0xFF75107C)
 val Green = Color(0xFF00FF0C)
 
