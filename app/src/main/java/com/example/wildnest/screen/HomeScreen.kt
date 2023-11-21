@@ -30,6 +30,7 @@ import com.example.wildnest.ui.theme.Teal
 
 @Composable
 fun HomeScreen(navController: NavController) {
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
