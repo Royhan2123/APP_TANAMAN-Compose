@@ -1,5 +1,9 @@
 package com.example.wildnest.screen
 
+import android.content.Intent
+import android.provider.MediaStore
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +27,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wildnest.R
@@ -39,6 +45,8 @@ import com.example.wildnest.ui.theme.TealLight
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -109,7 +117,11 @@ fun HomeScreen(navController: NavController) {
                     modifier = Modifier
                         .width(300.dp)
                         .height(110.dp)
-                        .offset(y = 100.dp),
+                        .offset(y = 100.dp)
+                        .clickable {
+                            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                            startActivity(context, intent, null)
+                        },
                     color = TealLight,
                     shape = RoundedCornerShape(
                         corner = CornerSize(20.dp)
