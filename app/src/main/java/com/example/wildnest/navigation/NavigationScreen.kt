@@ -4,7 +4,8 @@ enum class NavigationScreen {
     SplashScreen,
     HalamanBottom,
     HomeScreen,
-    SettingScreen;
+    SettingScreen,
+    CameraScreen;
 
     fun routes(route:String):NavigationScreen
     = when(route.substringBefore("/")){
@@ -12,6 +13,7 @@ enum class NavigationScreen {
         HalamanBottom.name -> HalamanBottom
         HomeScreen.name -> HomeScreen
         SettingScreen.name -> SettingScreen
+        CameraScreen.name -> CameraScreen
         else -> throw IllegalArgumentException("Route $route is not a recognized")
     }
 

@@ -2,7 +2,6 @@ package com.example.wildnest.screen
 
 import android.content.Intent
 import android.provider.MediaStore
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,8 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,6 +35,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wildnest.R
+import com.example.wildnest.navigation.NavigationScreen
 import com.example.wildnest.ui.theme.Black
 import com.example.wildnest.ui.theme.Gray
 import com.example.wildnest.ui.theme.LightGray
@@ -46,7 +44,6 @@ import com.example.wildnest.ui.theme.TealLight
 @Composable
 fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
-
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -67,13 +64,19 @@ fun HomeScreen(navController: NavController) {
                 fontSize = 16.sp, color = LightGray,
                 textAlign = TextAlign.Justify
             )
-            Box(modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 Surface(
                     modifier = Modifier
                         .width(300.dp)
                         .height(110.dp)
-                        .offset(y = 100.dp),
+                        .offset(y = 100.dp)
+                        .clickable {
+                            val cameraIntent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+                            startActivity(context, cameraIntent, null)
+                        },
                     color = TealLight,
                     shape = RoundedCornerShape(
                         corner = CornerSize(20.dp)
@@ -101,7 +104,8 @@ fun HomeScreen(navController: NavController) {
                             Text(
                                 text = "Camera",
                                 color = Black,
-                                fontWeight = FontWeight.W500)
+                                fontWeight = FontWeight.W500
+                            )
                             Text(
                                 text = "take a picture of \nsomething and see the \nresults of your picture",
                                 color = Gray
@@ -111,15 +115,20 @@ fun HomeScreen(navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.padding(top = 30.dp))
-            Box(modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 Surface(
                     modifier = Modifier
                         .width(300.dp)
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-                            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                            val intent = Intent(
+                                Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            )
                             startActivity(context, intent, null)
                         },
                     color = TealLight,
@@ -146,8 +155,10 @@ fun HomeScreen(navController: NavController) {
                                 .fillMaxSize(),
                             horizontalAlignment = Alignment.Start
                         ) {
-                            Text(text = "Gallery", color = Black,
-                                fontWeight = FontWeight.W500)
+                            Text(
+                                text = "Gallery", color = Black,
+                                fontWeight = FontWeight.W500
+                            )
                             Text(
                                 text = "Insert your image\nAnd see the results!",
                                 color = Gray
