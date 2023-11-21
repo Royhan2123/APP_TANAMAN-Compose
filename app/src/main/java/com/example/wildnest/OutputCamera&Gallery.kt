@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.wildnest.ui.theme.Teal
 import com.example.wildnest.ui.theme.White
+import org.intellij.lang.annotations.JdkConstants.FontStyle
 
 @Composable
 fun OutputCameraGallery(navController: NavController) {
@@ -63,6 +64,13 @@ fun OutputCameraGallery(navController: NavController) {
                 )
             ) {
                 Text(text = "Find Out", color = White, fontSize = 15.sp)
+            }
+            // TODO THIS OUTPUT
+            Column (
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(text = "Output", fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
             }
         }
     }
