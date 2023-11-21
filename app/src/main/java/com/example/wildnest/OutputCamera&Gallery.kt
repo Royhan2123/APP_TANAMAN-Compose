@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.wildnest.ui.theme.Gray
 import com.example.wildnest.ui.theme.Teal
 import com.example.wildnest.ui.theme.White
 import org.intellij.lang.annotations.JdkConstants.FontStyle
@@ -70,7 +71,10 @@ fun OutputCameraGallery(navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(text = "Output", fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
+                Text(
+                    text = " // Output",
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                    color = Gray)
             }
         }
     }
