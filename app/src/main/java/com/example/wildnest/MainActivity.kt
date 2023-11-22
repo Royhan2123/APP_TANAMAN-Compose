@@ -15,6 +15,9 @@ class MainActivity : ComponentActivity() {
            MainContent()
         }
     }
+    companion object {
+
+    }
 }
 
 @Composable
