@@ -74,8 +74,7 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-                            val cameraIntent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
-                            startActivity(context, cameraIntent, null)
+                            navController.navigate(NavigationScreen.CameraContent.name)
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
