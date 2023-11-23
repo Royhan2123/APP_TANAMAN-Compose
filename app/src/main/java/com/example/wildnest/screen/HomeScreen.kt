@@ -74,7 +74,7 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-                            navController.navigate(NavigationScreen.CameraContent.name)
+                            //navController.navigate(NavigationScreen.CameraContent.name)
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
