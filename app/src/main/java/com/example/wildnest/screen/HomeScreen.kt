@@ -118,6 +118,14 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
+                            val permissionCheckResult = ContextCompat.checkSelfPermission(
+                                context, Manifest.permission.CAMERA
+                            )
+                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                cameraLaucher.launch(uri)
+                            } else {
+                                permissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
@@ -167,36 +175,13 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-                            val permissionCheckResult = ContextCompat.checkSelfPermission(
-                                context, Manifest.permission.CAMERA
-                            )
-                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                                cameraLaucher.launch(uri)
-                            } else {
-                                permissionLauncher.launch(Manifest.permission.CAMERA)
-                            }
+
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
                         corner = CornerSize(20.dp)
                     ),
                 ) {
-                    if (capturedImageUri.path?.isNotEmpty() == true){
-                        Image(
-                            modifier = Modifier
-                                .padding(
-                                    16.dp,
-                                    8.dp),
-                            painter = rememberImagePainter(capturedImageUri),
-                            contentDescription = null)
-                    }else {
-                        Image(
-                            modifier = Modifier
-                                .padding(
-                                    16.dp,
-                                    8.dp),
-                            imageVector = Icons.Rounded.Photo,
-                            contentDescription = null)
                     }
                     Row(
                         modifier = Modifier
