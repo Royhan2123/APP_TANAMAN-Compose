@@ -49,138 +49,123 @@ import com.example.wildnest.ui.theme.Gray
 import com.example.wildnest.ui.theme.LightGray
 import com.example.wildnest.ui.theme.TealLight
 
-class HomeScreen(navController: NavController) : ComponentActivity() {
-    private var imageUriState = mutableStateOf<Uri?>(null)
-    private val selectImageLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            imageUriState.value = uri
-        }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val context = LocalContext.current
-            Surface(
-                modifier = Modifier.fillMaxSize()
+@Composable
+fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+                .offset(y = 70.dp)
+        ) {
+            Text(
+                text = "Welcome To Wild Nest",
+                fontSize = 20.sp,
+                color = Color(0xFF2CCF99),
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "In this application, you can now\nExplore natural diversity interactively.\nTake a photo of your surroundings,\nInsert an image, and let the appreveal\nThe mysteries of nature.",
+                fontSize = 16.sp, color = LightGray,
+                textAlign = TextAlign.Justify
+            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                Column(
+                Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 20.dp)
-                        .offset(y = 70.dp)
-                ) {
-                    Text(
-                        text = "Welcome To Wild Nest",
-                        fontSize = 20.sp,
-                        color = Color(0xFF2CCF99),
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "In this application, you can now\nExplore natural diversity interactively.\nTake a photo of your surroundings,\nInsert an image, and let the appreveal\nThe mysteries of nature.",
-                        fontSize = 16.sp, color = LightGray,
-                        textAlign = TextAlign.Justify
-                    )
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .width(300.dp)
-                                .height(110.dp)
-                                .offset(y = 100.dp)
-                                .clickable {
+                        .width(300.dp)
+                        .height(110.dp)
+                        .offset(y = 100.dp)
+                        .clickable {
 
-                                },
-                            color = TealLight,
-                            shape = RoundedCornerShape(
-                                corner = CornerSize(20.dp)
-                            ),
+                        },
+                    color = TealLight,
+                    shape = RoundedCornerShape(
+                        corner = CornerSize(20.dp)
+                    ),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(vertical = 20.dp, horizontal = 30.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_camera_alt_24),
+                            contentDescription = "icon-camera",
+                            tint = LightGray,
+                            modifier = Modifier.size(35.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(start = 25.dp))
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(vertical = 20.dp, horizontal = 30.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.baseline_camera_alt_24),
-                                    contentDescription = "icon-camera",
-                                    tint = LightGray,
-                                    modifier = Modifier.size(35.dp)
-                                )
-                                Spacer(modifier = Modifier.padding(start = 25.dp))
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    horizontalAlignment = Alignment.Start
-                                ) {
-                                    Text(
-                                        text = "Camera",
-                                        color = Black,
-                                        fontWeight = FontWeight.W500
-                                    )
-                                    Text(
-                                        text = "take a picture of \nsomething and see the \nresults of your picture",
-                                        color = Gray
-                                    )
-                                }
-                            }
+                            Text(
+                                text = "Camera",
+                                color = Black,
+                                fontWeight = FontWeight.W500
+                            )
+                            Text(
+                                text = "take a picture of \nsomething and see the \nresults of your picture",
+                                color = Gray
+                            )
                         }
                     }
-                    Spacer(modifier = Modifier.padding(top = 30.dp))
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                }
+            }
+            Spacer(modifier = Modifier.padding(top = 30.dp))
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .width(300.dp)
+                        .height(110.dp)
+                        .offset(y = 100.dp)
+                        .clickable {
+
+                        },
+                    color = TealLight,
+                    shape = RoundedCornerShape(
+                        corner = CornerSize(20.dp)
+                    ),
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(vertical = 20.dp, horizontal = 30.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Surface(
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_photo_24),
+                            contentDescription = "img-picture",
+                            tint = LightGray,
+                            modifier = Modifier.size(35.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(start = 25.dp))
+                        Column(
                             modifier = Modifier
-                                .width(300.dp)
-                                .height(110.dp)
-                                .offset(y = 100.dp)
-                                .clickable {
-                                    selectImageLauncher.launch("image/*")
-                                    val intent = Intent(
-                                        Intent.ACTION_PICK,
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                                    )
-                                    ContextCompat.startActivity(context, intent, null)
-                                },
-                            color = TealLight,
-                            shape = RoundedCornerShape(
-                                corner = CornerSize(20.dp)
-                            ),
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(vertical = 20.dp, horizontal = 30.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.baseline_photo_24),
-                                    contentDescription = "img-picture",
-                                    tint = LightGray,
-                                    modifier = Modifier.size(35.dp)
-                                )
-                                Spacer(modifier = Modifier.padding(start = 25.dp))
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    horizontalAlignment = Alignment.Start
-                                ) {
-                                    Text(
-                                        text = "Gallery", color = Black,
-                                        fontWeight = FontWeight.W500
-                                    )
-                                    Text(
-                                        text = "Insert your image\nAnd see the results!",
-                                        color = Gray
-                                    )
-                                }
-                            }
+                            Text(
+                                text = "Gallery", color = Black,
+                                fontWeight = FontWeight.W500
+                            )
+                            Text(
+                                text = "Insert your image\nAnd see the results!",
+                                color = Gray
+                            )
                         }
                     }
                 }
