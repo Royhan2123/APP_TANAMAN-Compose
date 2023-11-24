@@ -1,17 +1,14 @@
 package com.example.wildnest.screen
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Photo
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,19 +48,46 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil.compose.rememberImagePainter
 import com.example.wildnest.R
 import com.example.wildnest.ui.theme.Black
 import com.example.wildnest.ui.theme.Gray
 import com.example.wildnest.ui.theme.LightGray
 import com.example.wildnest.ui.theme.TealLight
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Objects
 
 @Composable
 fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
+    val file = context.createImageFile()
+    val uri = FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        context.packageName + ".provider", file
+    )
+    var capturedImageUri by remember {
+        mutableStateOf<Uri>(Uri.EMPTY)
+    }
+    val cameraLaucher = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) {
+        capturedImageUri = uri
+    }
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
+            Toast.makeText(
+                context, "Permission Granted", Toast.LENGTH_SHORT
+            ).show()
+            cameraLaucher.launch(uri)
+        } else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+
+        }
+    }
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -93,7 +118,6 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
@@ -143,13 +167,37 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-
+                            val permissionCheckResult = ContextCompat.checkSelfPermission(
+                                context, Manifest.permission.CAMERA
+                            )
+                            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                cameraLaucher.launch(uri)
+                            } else {
+                                permissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
                         corner = CornerSize(20.dp)
                     ),
                 ) {
+                    if (capturedImageUri.path?.isNotEmpty() == true){
+                        Image(
+                            modifier = Modifier
+                                .padding(
+                                    16.dp,
+                                    8.dp),
+                            painter = rememberImagePainter(capturedImageUri),
+                            contentDescription = null)
+                    }else {
+                        Image(
+                            modifier = Modifier
+                                .padding(
+                                    16.dp,
+                                    8.dp),
+                            imageVector = Icons.Rounded.Photo,
+                            contentDescription = null)
+                    }
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -185,58 +233,17 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun ImageCaptureCamera(navController: NavController) {
-    val context = LocalContext.current
-    val file = context.createImageFile()
-    val uri = FileProvider.getUriForFile(
-        Objects.requireNonNull(context),
-        context.packageName + ".provider", file
+@SuppressLint("SimpleDateFormat")
+fun Context.createImageFile(): File {
+    val timeStamp = SimpleDateFormat("yyyy_MM_dd_HH:mm:ss").format(Date())
+    val imageFilesName = "JPEG_" + timeStamp + "_"
+    val image = File.createTempFile(
+        imageFilesName,
+        ".jpg",
+        externalCacheDir
     )
-    var capturedImageUri by remember {
-        mutableStateOf<Uri>(Uri.EMPTY)
-    }
-    val cameraLaucher = rememberLauncherForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) {
-        capturedImageUri = uri
-    }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-        if (it) {
-            Toast.makeText(
-                context, "Permission Granted", Toast.LENGTH_SHORT
-            ).show()
-            cameraLaucher.launch(uri)
-        } else {
-            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT)
-
-        }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        Button(onClick = {
-            val permissionCheckResult = ContextCompat.checkSelfPermission(
-                context, Manifest.permission.CAMERA
-            )
-            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                cameraLaucher.launch(uri)
-            } else {
-                permissionLauncher.launch(Manifest.permission.CAMERA)
-            }
-        }) {
-            Text(text = "Capture Image")
-        }
-    }
-
+    return image
 }
-
 
 @Preview
 @Composable
