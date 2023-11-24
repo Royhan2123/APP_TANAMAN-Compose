@@ -1,7 +1,12 @@
 package com.example.wildnest.screen
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,137 +37,150 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.wildnest.R
-import com.example.wildnest.navigation.NavigationScreen
 import com.example.wildnest.ui.theme.Black
 import com.example.wildnest.ui.theme.Gray
 import com.example.wildnest.ui.theme.LightGray
 import com.example.wildnest.ui.theme.TealLight
 
-@Composable
-fun HomeScreen(navController: NavController) {
-    val context = LocalContext.current
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .offset(y = 70.dp)
-        ) {
-            Text(
-                text = "Welcome To Wild Nest",
-                fontSize = 20.sp,
-                color = Color(0xFF2CCF99),
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "In this application, you can now\nExplore natural diversity interactively.\nTake a photo of your surroundings,\nInsert an image, and let the appreveal\nThe mysteries of nature.",
-                fontSize = 16.sp, color = LightGray,
-                textAlign = TextAlign.Justify
-            )
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+class HomeScreen(navController: NavController) : ComponentActivity() {
+    private var imageUriState = mutableStateOf<Uri?>(null)
+    private val selectImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            imageUriState.value = uri
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val context = LocalContext.current
+            Surface(
+                modifier = Modifier.fillMaxSize()
             ) {
-                Surface(
+                Column(
                     modifier = Modifier
-                        .width(300.dp)
-                        .height(110.dp)
-                        .offset(y = 100.dp)
-                        .clickable {
-                            //navController.navigate(NavigationScreen.CameraContent.name)
-                        },
-                    color = TealLight,
-                    shape = RoundedCornerShape(
-                        corner = CornerSize(20.dp)
-                    ),
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp)
+                        .offset(y = 70.dp)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 20.dp, horizontal = 30.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    Text(
+                        text = "Welcome To Wild Nest",
+                        fontSize = 20.sp,
+                        color = Color(0xFF2CCF99),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "In this application, you can now\nExplore natural diversity interactively.\nTake a photo of your surroundings,\nInsert an image, and let the appreveal\nThe mysteries of nature.",
+                        fontSize = 16.sp, color = LightGray,
+                        textAlign = TextAlign.Justify
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_camera_alt_24),
-                            contentDescription = "icon-camera",
-                            tint = LightGray,
-                            modifier = Modifier.size(35.dp)
-                        )
-                        Spacer(modifier = Modifier.padding(start = 25.dp))
-                        Column(
+                        Surface(
                             modifier = Modifier
-                                .fillMaxSize(),
-                            horizontalAlignment = Alignment.Start
+                                .width(300.dp)
+                                .height(110.dp)
+                                .offset(y = 100.dp)
+                                .clickable {
+
+                                },
+                            color = TealLight,
+                            shape = RoundedCornerShape(
+                                corner = CornerSize(20.dp)
+                            ),
                         ) {
-                            Text(
-                                text = "Camera",
-                                color = Black,
-                                fontWeight = FontWeight.W500
-                            )
-                            Text(
-                                text = "take a picture of \nsomething and see the \nresults of your picture",
-                                color = Gray
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(vertical = 20.dp, horizontal = 30.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_camera_alt_24),
+                                    contentDescription = "icon-camera",
+                                    tint = LightGray,
+                                    modifier = Modifier.size(35.dp)
+                                )
+                                Spacer(modifier = Modifier.padding(start = 25.dp))
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    horizontalAlignment = Alignment.Start
+                                ) {
+                                    Text(
+                                        text = "Camera",
+                                        color = Black,
+                                        fontWeight = FontWeight.W500
+                                    )
+                                    Text(
+                                        text = "take a picture of \nsomething and see the \nresults of your picture",
+                                        color = Gray
+                                    )
+                                }
+                            }
                         }
                     }
-                }
-            }
-            Spacer(modifier = Modifier.padding(top = 30.dp))
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(110.dp)
-                        .offset(y = 100.dp)
-                        .clickable {
-                            val intent = Intent(
-                                Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                            )
-                            startActivity(context, intent, null)
-                        },
-                    color = TealLight,
-                    shape = RoundedCornerShape(
-                        corner = CornerSize(20.dp)
-                    ),
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 20.dp, horizontal = 30.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    Spacer(modifier = Modifier.padding(top = 30.dp))
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_photo_24),
-                            contentDescription = "img-picture",
-                            tint = LightGray,
-                            modifier = Modifier.size(35.dp)
-                        )
-                        Spacer(modifier = Modifier.padding(start = 25.dp))
-                        Column(
+                        Surface(
                             modifier = Modifier
-                                .fillMaxSize(),
-                            horizontalAlignment = Alignment.Start
+                                .width(300.dp)
+                                .height(110.dp)
+                                .offset(y = 100.dp)
+                                .clickable {
+                                    selectImageLauncher.launch("image/*")
+                                    val intent = Intent(
+                                        Intent.ACTION_PICK,
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                    )
+                                    ContextCompat.startActivity(context, intent, null)
+                                },
+                            color = TealLight,
+                            shape = RoundedCornerShape(
+                                corner = CornerSize(20.dp)
+                            ),
                         ) {
-                            Text(
-                                text = "Gallery", color = Black,
-                                fontWeight = FontWeight.W500
-                            )
-                            Text(
-                                text = "Insert your image\nAnd see the results!",
-                                color = Gray
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(vertical = 20.dp, horizontal = 30.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_photo_24),
+                                    contentDescription = "img-picture",
+                                    tint = LightGray,
+                                    modifier = Modifier.size(35.dp)
+                                )
+                                Spacer(modifier = Modifier.padding(start = 25.dp))
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    horizontalAlignment = Alignment.Start
+                                ) {
+                                    Text(
+                                        text = "Gallery", color = Black,
+                                        fontWeight = FontWeight.W500
+                                    )
+                                    Text(
+                                        text = "Insert your image\nAnd see the results!",
+                                        color = Gray
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -169,6 +188,7 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
+
 
 @Preview
 @Composable

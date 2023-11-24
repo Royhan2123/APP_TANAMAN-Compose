@@ -21,7 +21,7 @@ fun Navigations(){
             HalamanBottom()
         }
         composable(NavigationScreen.HomeScreen.name){
-            HomeScreen(navController = navController)
+            HomeScreen(navController)
         }
         composable(NavigationScreen.SettingScreen.name){
             SettingScreen(navController = navController)
