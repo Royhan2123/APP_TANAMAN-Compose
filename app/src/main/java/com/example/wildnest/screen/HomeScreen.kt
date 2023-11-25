@@ -4,11 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,8 +24,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Photo
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,7 +46,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberImagePainter
 import com.example.wildnest.R
 import com.example.wildnest.ui.theme.Black
 import com.example.wildnest.ui.theme.Gray
@@ -63,6 +60,16 @@ import java.util.Objects
 fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
     val file = context.createImageFile()
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val bitmap = remember {
+        mutableStateOf<Bitmap?>(null)
+    }
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            imageUri = uri
+        }
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
         context.packageName + ".provider", file
@@ -175,14 +182,13 @@ fun HomeScreen(navController: NavController) {
                         .height(110.dp)
                         .offset(y = 100.dp)
                         .clickable {
-
+                            launcher.launch("image/*")
                         },
                     color = TealLight,
                     shape = RoundedCornerShape(
                         corner = CornerSize(20.dp)
                     ),
                 ) {
-                    }
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -229,6 +235,7 @@ fun Context.createImageFile(): File {
     )
     return image
 }
+
 
 @Preview
 @Composable
