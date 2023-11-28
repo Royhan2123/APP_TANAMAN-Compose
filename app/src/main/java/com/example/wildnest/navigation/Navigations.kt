@@ -5,7 +5,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wildnest.HalamanBottom.HalamanBottom
-import com.example.wildnest.screen.CameraScreen
 import com.example.wildnest.screen.HomeScreen
 import com.example.wildnest.screen.SettingScreen
 import com.example.wildnest.screen.SplashScreen
@@ -25,9 +24,6 @@ fun Navigations(){
         }
         composable(NavigationScreen.SettingScreen.name){
             SettingScreen(navController = navController)
-        }
-        composable(NavigationScreen.CameraScreen.name){
-            CameraScreen()
         }
     }
 }

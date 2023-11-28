@@ -7,7 +7,7 @@
         android:maxSdkVersion="32" />
 
     <uses-feature android:name="android.hardware.camera" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -21,16 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WildNest"
         tools:targetApi="31">
-        <activity
-            android:name=".screen.HomeScreen"
-            android:exported="false"
-            android:label="@string/title_activity_home_screen"
-            android:theme="@style/Theme.WildNest" />
-        <activity
-            android:name=".screen.CameraScreen"
-            android:exported="false"
-            android:label="@string/title_activity_camera_screen"
-            android:theme="@style/Theme.WildNest" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

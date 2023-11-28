@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -62,9 +61,6 @@ fun HomeScreen(navController: NavController) {
     val file = context.createImageFile()
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
-    }
-    val bitmap = remember {
-        mutableStateOf<Bitmap?>(null)
     }
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
